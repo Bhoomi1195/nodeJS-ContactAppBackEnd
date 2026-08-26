@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const user_routes_1 = __importDefault(require("./routes/user.routes"));
+const cors_1 = __importDefault(require("cors"));
+const error_middleware_1 = require("./middleware/error.middleware");
+const logger_middleware_1 = require("./middleware/logger.middleware");
+const contact_routes_1 = __importDefault(require("./routes/contact.routes"));
+const API_PREFIX = "/api/v1";
+const app = (0, express_1.default)();
+app.use(logger_middleware_1.logger);
+app.disable("etag");
+app.use((0, cors_1.default)());
+app.use(express_1.default.json());
+app.use(`${API_PREFIX}/users`, user_routes_1.default);
+app.use(`${API_PREFIX}/contacts`, contact_routes_1.default);
+app.use(error_middleware_1.errorHandler);
+exports.default = app;
